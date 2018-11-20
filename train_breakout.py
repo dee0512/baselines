@@ -25,7 +25,8 @@ def main():
         learning_starts=50000,
         target_network_update_freq=10000,
         gamma=0.99,
-        print_freq=1000
+        print_freq=1000,
+        checkpoint_path="checkpoints"
     )
 
     model.save('breakout_model.pkl')
