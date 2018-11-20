@@ -203,7 +203,7 @@ def learn(env,
         make_obs_ph=make_obs_ph,
         q_func=q_func,
         num_actions=env.action_space.n,
-        optimizer=tf.train.RMSPropOptimizer(learning_rate=lr, momentum=0.95, epsilon=0.01, decay=0.95),
+        optimizer=tf.train.RMSPropOptimizer(learning_rate=lr, momentum=0.95, epsilon=0.01),
         gamma=gamma,
         grad_norm_clipping=10,
         param_noise=param_noise
