@@ -19,7 +19,7 @@ def main():
         lr=0.00025,
         total_timesteps=int(5e7),
         buffer_size=1000000,
-        exploration_fraction=0.01,
+        exploration_fraction=0.02,
         exploration_final_eps=0.1,
         train_freq=4,
         learning_starts=50000,
