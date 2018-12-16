@@ -2,7 +2,6 @@
 import sys
 sys.path.append('../')
 
-from baselines import deepq
 from baselines import bench
 from baselines import logger
 from baselines.common.atari_wrappers import make_atari
