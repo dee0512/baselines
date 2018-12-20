@@ -114,7 +114,7 @@ def main(seed=0, n_episodes=100, epsilon=0.05, occlusion=0):
         rewards[episode] = episode_rew
         print("Episode " + str(episode)+" reward", episode_rew)
 
-    np.savetxt('results/occlusion_'+str(occlusion)+'.txt', rewards)
+    np.savetxt('results/occlusion_'+str(occlusion)+'_'+str(seed)+'.txt', rewards)
     env.close()
 
 if __name__ == '__main__':
