@@ -10,5 +10,5 @@
 #SBATCH --gres=gpu:1
 
 
-python3 train_breakout.py
+python3 train_dqn.py
 exit

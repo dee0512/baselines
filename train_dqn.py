@@ -2,11 +2,20 @@ from baselines import deepq
 from baselines import bench
 from baselines import logger
 from baselines.common.atari_wrappers import make_atari
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--game', type=str, default='breakout')
+parser.add_argument('--rom', type=str, default='BreakoutNoFrameskip-v4')
+
+
+args = vars(parser.parse_args())
 
 
 def main():
-    logger.configure(dir="breakout_train_log")
-    env = make_atari('BreakoutNoFrameskip-v4')
+    logger.configure(dir=game + "_train_log")
+    env = make_atari(rom)
     env = bench.Monitor(env, logger.get_dir())
     env = deepq.wrap_atari_dqn(env)
 
@@ -14,7 +23,7 @@ def main():
         env,
         "conv_only",
         convs=[(32, 8, 4), (64, 4, 2), (64, 3, 1)],
-        hiddens=[256],
+        hiddens=[512],
         dueling=False,
         lr=0.00025,
         total_timesteps=int(5e7),
@@ -29,7 +38,7 @@ def main():
         checkpoint_path="checkpoints"
     )
 
-    model.save('breakout_model.pkl')
+    model.save(game + '_model.pkl')
     env.close()
 
 if __name__ == '__main__':
