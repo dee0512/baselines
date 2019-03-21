@@ -7,13 +7,13 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--game', type=str, default='breakout')
-parser.add_argument('--rom', type=str, default='BreakoutNoFrameskip-v4')
 locals().update(vars(parser.parse_args()))
 
+name = ''.join([g.capitalize() for g in game.split('_')])
 
 def main():
     logger.configure(dir=game + "_train_log")
-    env = make_atari(rom)
+    env = make_atari(name+'NoFrameskip-v4')
     env = bench.Monitor(env, logger.get_dir())
     env = deepq.wrap_atari_dqn(env)
 

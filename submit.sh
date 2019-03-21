@@ -9,6 +9,7 @@
 #SBATCH -e res_%j.err
 #SBATCH --gres=gpu:1
 
-
-python3 train_dqn.py
+game=$1
+echo $game
+python3 train_dqn.py --game $game
 exit
