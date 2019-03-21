@@ -8,9 +8,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--game', type=str, default='breakout')
 parser.add_argument('--rom', type=str, default='BreakoutNoFrameskip-v4')
-
-
-args = vars(parser.parse_args())
+locals().update(vars(parser.parse_args()))
 
 
 def main():
