@@ -33,7 +33,7 @@ def main():
         target_network_update_freq=10000,
         gamma=0.99,
         print_freq=1000,
-        checkpoint_path="checkpoints"
+        checkpoint_path= game + "_checkpoints"
     )
 
     model.save(game + '_model.pkl')
