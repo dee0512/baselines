@@ -10,7 +10,13 @@ from baselines.common.tf_util import get_session
 import numpy as np
 import argparse
 
-def main(game: str):
+def policy(qvals, eps):
+    A = np.ones(len(qvals), dtype=float) * eps / len(qvals)
+    best_action = torch.argmax(qvals)
+    A[best_action] += (1 - eps)
+    return A
+
+def main(game: str, model:str):
     name = ''.join([g.capitalize() for g in game.split('_')])
     env = make_atari(name+'NoFrameskip-v4')
     env = bench.Monitor(env, logger.get_dir(), allow_early_resets=True)
@@ -62,7 +68,8 @@ def main(game: str):
 
     # logger.configure(dir="breakout_train_log")
 
-
+    if model is None:
+        model = game+"_model.pkl"
 
     model = deepq.learn(
         env,
@@ -71,8 +78,8 @@ def main(game: str):
         hiddens=[512],
         dueling=False,
         total_timesteps=0,
-        exploration_final_eps=0.1,
-        load_path="trained_networks/"+game+"_model.pkl",
+        exploration_final_eps=0.05,
+        load_path="trained_networks/" + model,
     )
     sess = get_session()
     pytorch_network = Net()
@@ -129,12 +136,13 @@ def main(game: str):
             # print(model(obs[None]))
             # print(tf.global_variables())
 
-            action = torch.argmax(pytorch_network(torch.tensor(obs[None], dtype=torch.float).permute(0, 3, 1, 2)))
+            probabilities = policy(pytorch_network(torch.tensor(obs[None], dtype=torch.float).permute(0, 3, 1, 2))[0], 0.05)
+            action = np.random.choice(np.arange(len(probabilities)), p=probabilities)
             # action = model(obs[None])[0]
             obs, rew, done, _ = env.step(action)
             episode_rew += rew
         rewards[episode] = episode_rew
-        print("Episode reward", episode_rew)
+        print("Episode " +str(episode) +" reward", episode_rew)
     # model.save('breakout_model.pkl')
     env.close()
     print("Avg: ", np.mean(rewards))
@@ -142,5 +150,6 @@ def main(game: str):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--game', type=str, default='breakout')
+    parser.add_argument('--model', type=str)
     locals().update(vars(parser.parse_args()))
-    main(game=game)
+    main(game=game, model=model)
